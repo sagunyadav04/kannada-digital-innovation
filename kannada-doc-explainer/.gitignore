@@ -1,9 +1,18 @@
-venv/
-.venv/
-__pycache__/
-*.py[cod]
+
+# Secrets and local data: never commit these
 .env
-.pytest_cache/
-.coverage
-htmlcov/
-.DS_Store
+.env.*
+!.env.example
+data/
+*.db
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Storedesktop.ini

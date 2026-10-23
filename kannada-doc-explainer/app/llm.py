@@ -27,9 +27,9 @@ def analyze(pages) -> dict:
     client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
     parts = [types.Part.from_bytes(data=to_jpeg_bytes(p), mime_type="image/jpeg") for p in pages]
     resp = client.models.generate_content(
-        model=os.getenv("GEMINI_MODEL", "gemini-2.5-flash"),
+        model=os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite"),
         contents=parts + [PROMPT],
-        config=types.GenerateContentConfig(response_mime_type="application/json", temperature=0.1),
+        config=types.GenerateContentConfig(response_mime_type="application/json"),
     )
     data = json.loads(resp.text)
     if not isinstance(data, dict) or not data.get("text"):

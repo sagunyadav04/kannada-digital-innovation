@@ -1,7 +1,23 @@
 """Image/PDF loading and the offline Tesseract OCR fallback."""
 import io
 import os
+import pytesseract
+from pathlib import Path
+import pytesseract
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+TESSDATA_DIR = BASE_DIR / "tessdata"
+
+pytesseract.pytesseract.tesseract_cmd = (
+    r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+)
+
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+
+os.environ.setdefault(
+    "TESSDATA_PREFIX",
+    os.path.abspath("tessdata")
+)
 from PIL import Image, ImageOps
 
 
@@ -33,7 +49,17 @@ def to_jpeg_bytes(img: Image.Image, max_side=2000) -> bytes:
 
 
 def tesseract_text(pages) -> str:
-    import pytesseract
     lang = os.getenv("TESS_LANG", "kan+eng")
-    out = [pytesseract.image_to_string(preprocess(p), lang=lang, config="--oem 1 --psm 3") for p in pages]
-    return "\n\n".join(t.strip() for t in out if t.strip())
+
+    config = f'--tessdata-dir {TESSDATA_DIR} --oem 1 --psm 3'
+
+    out = [
+        pytesseract.image_to_string(
+            preprocess(page),
+            lang=lang,
+            config=config
+        )
+        for page in pages
+    ]
+
+    return "\n\n".join(text.strip() for text in out if text.strip())
