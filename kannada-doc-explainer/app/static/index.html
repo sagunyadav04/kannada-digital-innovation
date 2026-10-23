@@ -1,79 +1,209 @@
+
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kannada Document Explainer</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=Noto+Sans+Kannada:wght@400;600&family=Noto+Sans:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/static/style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Kannada Document Explainer</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=Noto+Sans+Kannada:wght@400;600&family=Noto+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="/static/style.css">
 </head>
+
 <body>
-<header class="top">
-  <h1>ಕನ್ನಡ ದಾಖಲೆ <span>Kannada Document Explainer</span></h1>
-  <nav>
-    <button id="nav-scan" class="navbtn active">Scan</button>
-    <button id="nav-lib" class="navbtn">My library</button>
-  </nav>
-</header>
+  <header class="top">
+    <h1>
+      ಕನ್ನಡ ದಾಖಲೆ
+      <span>Kannada Document Explainer</span>
+    </h1>
 
-<main>
-  <section id="scan">
-    <label id="drop" class="drop" tabindex="0">
-      <input id="file" type="file" accept="image/*,application/pdf" hidden>
-      <strong>Drop a Kannada bill, notice or form here</strong>
-      <span>or tap to take a photo / choose a file (JPG, PNG, WebP, PDF up to 8 MB)</span>
-    </label>
-    <div class="options">
-      <label><input type="checkbox" id="save"> Save to my library on this device's account</label>
-      <span id="engine-note" class="muted"></span>
-    </div>
-    <p id="status" role="status" class="status" hidden></p>
+    <nav aria-label="Main navigation">
+      <button id="nav-scan" class="navbtn active" type="button">
+        Scan
+      </button>
 
-    <div id="result" class="desk" hidden>
-      <article class="paper" aria-label="Text as written">
-        <div class="bar">
-          <h2>As written</h2>
-          <input id="find" type="search" placeholder="Find in this document" aria-label="Find in this document">
-        </div>
-        <div id="kn-text" class="kn" lang="kn"></div>
-        <div class="actions">
-          <button id="speak">Read aloud</button>
-          <button id="copy">Copy text</button>
-          <button id="download">Download .txt</button>
-        </div>
-        <p class="muted small">Text recognition can make mistakes. Check important numbers against the original.</p>
-      </article>
+      <button id="nav-lib" class="navbtn" type="button">
+        My library
+      </button>
 
-      <article class="plain" aria-label="Explanation">
-        <div class="tabs" role="tablist">
-          <button class="tab active" data-tab="explain" role="tab">In plain English</button>
-          <button class="tab" data-tab="translation" role="tab">Full translation</button>
-        </div>
-        <div id="tab-explain">
-          <p id="doctype" class="doctype"></p>
-          <p id="summary" class="summary"></p>
-          <h3>What to do</h3>
-          <ul id="actions-list"></ul>
-          <h3>Key facts</h3>
-          <dl id="facts"></dl>
-          <h3>Words in this document</h3>
-          <p class="muted small">Hover or focus a word to find it in the text.</p>
-          <ul id="glossary" class="chips"></ul>
-        </div>
-        <div id="tab-translation" hidden>
-          <p id="translation" class="translation"></p>
-        </div>
-      </article>
-    </div>
-  </section>
+      <button
+        id="theme-toggle"
+        class="navbtn"
+        type="button"
+        aria-pressed="false"
+        title="Switch color theme">
+        🌙 Dark mode
+      </button>
+    </nav>
+  </header>
 
-  <section id="library" hidden>
-    <input id="lib-q" type="search" placeholder="Search saved documents (Kannada or English)" aria-label="Search saved documents">
-    <ul id="lib-list" class="lib"></ul>
-  </section>
-</main>
-<script src="/static/app.js"></script>
+  <main>
+    <section id="scan">
+      <label id="drop" class="drop" tabindex="0">
+        <input
+          id="file"
+          type="file"
+          accept="image/*,application/pdf"
+          hidden>
+
+        <strong>Drop a Kannada bill, notice or form here</strong>
+
+        <span>
+          Or click to choose a file or take a photo
+          (JPG, PNG, WebP or PDF, up to 8 MB)
+        </span>
+      </label>
+
+      <div class="options">
+        <label>
+          <input type="checkbox" id="save">
+          Save to my library on this device
+        </label>
+
+        <span id="engine-note" class="muted"></span>
+      </div>
+
+      <p id="status" role="status" class="status" hidden></p>
+
+      <div id="result" class="desk" hidden>
+        <!-- Original Kannada text -->
+        <article class="paper" aria-label="Text as written">
+          <div class="bar">
+            <h2>As written</h2>
+
+            <input
+              id="find"
+              type="search"
+              placeholder="Find in this document"
+              aria-label="Find in this document">
+          </div>
+
+          <div class="reading-tools" aria-label="Reading settings">
+            <label for="font-increase">Text size</label>
+
+            <button
+              id="font-decrease"
+              type="button"
+              aria-label="Decrease text size">
+              A−
+            </button>
+
+            <button
+              id="font-increase"
+              type="button"
+              aria-label="Increase text size">
+              A+
+            </button>
+
+            <button id="font-reset" type="button">
+              Reset
+            </button>
+          </div>
+
+          <div id="kn-text" class="kn" lang="kn"></div>
+
+          <div class="actions">
+            <button id="speak" type="button">
+              🔊 Read aloud
+            </button>
+
+            <button id="copy" type="button">
+              📋 Copy text
+            </button>
+
+            <button id="download" type="button">
+              ⬇ Download .txt
+            </button>
+
+            <button id="clear-result" type="button">
+              ✕ Clear document
+            </button>
+          </div>
+
+          <p class="muted small">
+            OCR can make mistakes. Check important numbers against
+            the original document.
+          </p>
+        </article>
+
+        <!-- English explanation and translation -->
+        <article class="plain" aria-label="Explanation">
+          <div class="tabs" role="tablist">
+            <button
+              class="tab active"
+              data-tab="explain"
+              role="tab"
+              aria-selected="true"
+              type="button">
+              In plain English
+            </button>
+
+            <button
+              class="tab"
+              data-tab="translation"
+              role="tab"
+              aria-selected="false"
+              type="button">
+              Full translation
+            </button>
+          </div>
+
+          <div id="tab-explain">
+            <p id="doctype" class="doctype"></p>
+
+            <p id="summary" class="summary"></p>
+
+            <h3>What to do</h3>
+            <ul id="actions-list"></ul>
+
+            <h3>Key facts</h3>
+            <dl id="facts"></dl>
+
+            <h3>Words in this document</h3>
+
+            <p class="muted small">
+              Hover over or focus a word to highlight it in the
+              original Kannada text.
+            </p>
+
+            <ul id="glossary" class="chips"></ul>
+          </div>
+
+          <div id="tab-translation" hidden>
+            <p id="translation" class="translation"></p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Saved documents -->
+    <section id="library" hidden>
+      <h2>My document library</h2>
+
+      <p class="muted">
+        Find and reopen documents you saved on this device.
+      </p>
+
+      <input
+        id="lib-q"
+        type="search"
+        placeholder="Search saved documents in Kannada or English"
+        aria-label="Search saved documents">
+
+      <ul id="lib-list" class="lib"></ul>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    <p>Made to make Kannada documents easier to understand.</p>
+  </footer>
+
+  <script src="/static/app.js"></script>
 </body>
 </html>
